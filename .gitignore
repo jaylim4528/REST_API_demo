@@ -38,3 +38,6 @@ out/
 
 ### Kotlin ###
 .kotlin
+
+# Sensitive properties files
+secret.properties

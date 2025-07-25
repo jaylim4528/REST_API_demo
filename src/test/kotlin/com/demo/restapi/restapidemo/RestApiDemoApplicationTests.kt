@@ -8,6 +8,7 @@ class RestApiDemoApplicationTests {
 
     @Test
     fun contextLoads() {
+        return
     }
 
 }

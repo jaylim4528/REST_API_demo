@@ -1,6 +1,6 @@
 package com.demo.restapi.restapidemo.dto
 
-data class UserSimpleDTO(
+data class UsersSimpleDTO(
     val id: Long,
     val username: String
 )

@@ -9,27 +9,30 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestMapping
 
 @RestController
+@RequestMapping("/api/users")
 class UserResource (
     private val usersService: UsersService
 ) {
-    @PostMapping("/api/user")
+    @PostMapping("/new")
     fun createUser(@RequestBody user: UsersDTO): ResponseEntity<UsersDTO> {
         return ResponseEntity.status(HttpStatus.CREATED).body(usersService.createUser(user))
     }
 
-    @GetMapping("/api/users")
+    @GetMapping
     fun getUsers(): ResponseEntity<List<UsersDTO>> {
         return ResponseEntity.ok(usersService.getAllUsers())
     }
 
-    @GetMapping("/api/users/id/{id}")
+    @GetMapping("/id/{id}")
     fun getUserById(@PathVariable id: Long): ResponseEntity<UsersDTO> {
         return try {
             ResponseEntity.ok(usersService.getUserById(id))
@@ -38,7 +41,7 @@ class UserResource (
         }
     }
 
-    @GetMapping("/api/users/username/{username}")
+    @GetMapping("/username/{username}")
     fun getUserByUsername(@PathVariable username: String): ResponseEntity<UsersDTO> {
         return try {
             ResponseEntity.ok(usersService.getUserByUsername(username))
@@ -47,7 +50,7 @@ class UserResource (
         }
     }
 
-    @GetMapping("/api/users/email/{email}")
+    @GetMapping("/email/{email}")
     fun getUserByEmail(@PathVariable email: String): ResponseEntity<UsersDTO> {
         return try {
             ResponseEntity.ok(usersService.getUserByEmail(email))
@@ -56,7 +59,7 @@ class UserResource (
         }
     }
 
-    @PutMapping("/api/users/update")
+    @PatchMapping("/update")
     fun updateUser(@RequestBody user: UserUpdateDTO): ResponseEntity<UsersDTO> {
         return try {
             ResponseEntity.ok(usersService.updateUser(user))
@@ -65,7 +68,7 @@ class UserResource (
         }
     }
 
-    @DeleteMapping("/api/users/delete/id/{id}")
+    @DeleteMapping("/delete/id/{id}")
     fun deleteUserById(@PathVariable id: Long): ResponseEntity<Void> {
         return try {
             usersService.deleteUserById(id)
@@ -75,7 +78,7 @@ class UserResource (
         }
     }
 
-    @DeleteMapping("/api/users/delete/username/{username}")
+    @DeleteMapping("/delete/username/{username}")
     fun deleteUserByUsername(@PathVariable username: String): ResponseEntity<Void> {
         return try {
             usersService.deleteUserByUsername(username)
@@ -85,7 +88,7 @@ class UserResource (
         }
     }
 
-    @DeleteMapping("/api/users/delete/email/{email}")
+    @DeleteMapping("/delete/email/{email}")
     fun deleteUserByEmail(@PathVariable email: String): ResponseEntity<Void> {
         return try {
             usersService.deleteUserByEmail(email)

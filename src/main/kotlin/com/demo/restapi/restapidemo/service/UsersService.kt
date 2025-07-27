@@ -4,9 +4,15 @@ import com.demo.restapi.restapidemo.dto.UsersDTO
 import com.demo.restapi.restapidemo.model.Users
 
 interface UsersService {
+    // Create operations
     fun createUser(user: UsersDTO): UsersDTO
 
-    fun getAllUsername() : List<UsersDTO>
+    // Read operations
+    fun getAllUsers() : List<UsersDTO>
+    fun getUserById(id: Long) : UsersDTO
+    fun getUserByUsername(username: String): UsersDTO
+    fun getUserByEmail(email: String): UsersDTO
 
-    fun getUsernameById(id: Long) : UsersDTO
+    // Update operations
+    // fun updateUser(user: UsersDTO): UsersDTO
 }

@@ -23,11 +23,26 @@ class UsersServiceImpl (
             throw IllegalArgumentException("Username cannot be blank")
         }
 
+        if (user.email.isBlank()) {
+            println("Email cannot be blank")
+            throw IllegalArgumentException("Email cannot be blank")
+        }
+
+        if (!user.email.contains("@")) {
+            println("Email must contain '@'")
+            throw IllegalArgumentException("Email must contain '@'")
+        }
+
+        if (user.password.isBlank()) {
+            println("Password cannot be blank")
+            throw IllegalArgumentException("Password cannot be blank")
+        }
+
         val savedUser = usersRepository.save(userMapper.toEntity(user))
         return userMapper.fromEntity(savedUser)
     }
 
-    override fun getAllUsername(): List<UsersDTO> {
+    override fun getAllUsers(): List<UsersDTO> {
         val username = usersRepository.findAll().map { userMapper.fromEntity(it) }
 
         if (username.isEmpty()) {
@@ -38,7 +53,7 @@ class UsersServiceImpl (
         return username
     }
 
-    override fun getUsernameById(id: Long): UsersDTO {
+    override fun getUserById(id: Long): UsersDTO {
         val user = usersRepository.findById(id).orElseThrow {
             println("User with ID $id not found")
             EntityNotFoundException("User with ID $id not found")
@@ -46,4 +61,46 @@ class UsersServiceImpl (
 
         return userMapper.fromEntity(user)
     }
+
+    override fun getUserByUsername(username: String): UsersDTO {
+        val user = usersRepository.findByUsername(username) ?: run {
+            println("User with username $username not found")
+            throw EntityNotFoundException("User with username $username not found")
+        }
+
+        return userMapper.fromEntity(user)
+    }
+
+    override fun getUserByEmail(email: String): UsersDTO {
+        val user = usersRepository.findByEmail(email) ?: run {
+            println("User with email $email not found")
+            throw EntityNotFoundException("User with email $email not found")
+        }
+
+        return userMapper.fromEntity(user)
+    }
+
+//    override fun updateUser(user: UsersDTO): UsersDTO {
+//        if (user.id == null) {
+//            println("User ID cannot be null for update")
+//            throw IllegalArgumentException("User ID cannot be null for update")
+//        }
+//
+//        val existingUser = usersRepository.findById(user.id).orElseThrow {
+//            println("User with ID ${user.id} not found")
+//            EntityNotFoundException("User with ID ${user.id} not found")
+//        }
+//
+//        user.email?.takeIf { it.isNotBlank() }?.let {
+//            existingUser.email = it
+//        }
+//
+//        user.password?.takeIf { it.isNotBlank() }?.let {
+//            existingUser.password = it
+//        }
+//
+//        usersRepository.save(userMapper.toEntity(user))
+//
+//        return user
+//    }
 }

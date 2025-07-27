@@ -17,20 +17,38 @@ import org.springframework.web.bind.annotation.PutMapping
 class UserResource (
     private val usersService: UsersService
 ) {
-    @PostMapping("/api/users")
+    @PostMapping("/api/user")
     fun createUser(@RequestBody user: UsersDTO): ResponseEntity<UsersDTO> {
         return ResponseEntity.status(HttpStatus.CREATED).body(usersService.createUser(user))
     }
 
-    @GetMapping("/api/username")
-    fun getUsername(): ResponseEntity<List<UsersDTO>> {
-        return ResponseEntity.ok(usersService.getAllUsername())
+    @GetMapping("/api/users")
+    fun getUsers(): ResponseEntity<List<UsersDTO>> {
+        return ResponseEntity.ok(usersService.getAllUsers())
     }
 
-    @GetMapping("/api/username/{id}")
-    fun getUsernameById(@PathVariable id: Long): ResponseEntity<UsersDTO> {
+    @GetMapping("/api/users/id/{id}")
+    fun getUserById(@PathVariable id: Long): ResponseEntity<UsersDTO> {
         return try {
-            ResponseEntity.ok(usersService.getUsernameById(id))
+            ResponseEntity.ok(usersService.getUserById(id))
+        } catch (e: EntityNotFoundException) {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)
+        }
+    }
+
+    @GetMapping("/api/users/username/{username}")
+    fun getUserByUsername(@PathVariable username: String): ResponseEntity<UsersDTO> {
+        return try {
+            ResponseEntity.ok(usersService.getUserByUsername(username))
+        } catch (e: EntityNotFoundException) {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)
+        }
+    }
+
+    @GetMapping("/api/users/email/{email}")
+    fun getUserByEmail(@PathVariable email: String): ResponseEntity<UsersDTO> {
+        return try {
+            ResponseEntity.ok(usersService.getUserByEmail(email))
         } catch (e: EntityNotFoundException) {
             ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)
         }

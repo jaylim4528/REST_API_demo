@@ -108,4 +108,31 @@ class UsersServiceImpl (
 
         return userMapper.fromEntity(updatedUser)
     }
+
+    override fun deleteUserById(id: Long){
+        if (!usersRepository.existsById(id)) {
+            println("User with ID $id not found")
+            throw EntityNotFoundException("User with ID $id not found")
+        }
+
+        usersRepository.deleteById(id)
+    }
+
+    override fun deleteUserByUsername(username: String) {
+        val user = usersRepository.findByUsername(username) ?: run {
+            println("User with username $username not found")
+            throw EntityNotFoundException("User with username $username not found")
+        }
+
+        usersRepository.delete(user)
+    }
+
+    override fun deleteUserByEmail(email: String) {
+        val user = usersRepository.findByEmail(email) ?: run {
+            println("User with email $email not found")
+            throw EntityNotFoundException("User with email $email not found")
+        }
+
+        usersRepository.delete(user)
+    }
 }

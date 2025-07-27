@@ -6,6 +6,7 @@ import com.demo.restapi.restapidemo.dto.UsersDTO
 import jakarta.persistence.EntityNotFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -61,6 +62,36 @@ class UserResource (
             ResponseEntity.ok(usersService.updateUser(user))
         } catch (e: EntityNotFoundException) {
             ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)
+        }
+    }
+
+    @DeleteMapping("/api/users/delete/id/{id}")
+    fun deleteUserById(@PathVariable id: Long): ResponseEntity<Void> {
+        return try {
+            usersService.deleteUserById(id)
+            ResponseEntity.noContent().build()
+        } catch (e: EntityNotFoundException) {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+        }
+    }
+
+    @DeleteMapping("/api/users/delete/username/{username}")
+    fun deleteUserByUsername(@PathVariable username: String): ResponseEntity<Void> {
+        return try {
+            usersService.deleteUserByUsername(username)
+            ResponseEntity.noContent().build()
+        } catch (e: EntityNotFoundException) {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+        }
+    }
+
+    @DeleteMapping("/api/users/delete/email/{email}")
+    fun deleteUserByEmail(@PathVariable email: String): ResponseEntity<Void> {
+        return try {
+            usersService.deleteUserByEmail(email)
+            ResponseEntity.noContent().build()
+        } catch (e: EntityNotFoundException) {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).build()
         }
     }
 }

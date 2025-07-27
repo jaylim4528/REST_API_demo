@@ -16,4 +16,9 @@ interface UsersService {
 
     // Update operations
     fun updateUser(user: UserUpdateDTO): UsersDTO
+
+    // Delete operations
+    fun deleteUserById(id: Long)
+    fun deleteUserByUsername(username: String)
+    fun deleteUserByEmail(email: String)
 }

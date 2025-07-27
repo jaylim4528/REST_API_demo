@@ -1,5 +1,6 @@
 package com.demo.restapi.restapidemo.service
 
+import com.demo.restapi.restapidemo.dto.UserUpdateDTO
 import com.demo.restapi.restapidemo.dto.UsersDTO
 import com.demo.restapi.restapidemo.model.Users
 
@@ -14,5 +15,5 @@ interface UsersService {
     fun getUserByEmail(email: String): UsersDTO
 
     // Update operations
-    // fun updateUser(user: UsersDTO): UsersDTO
+    fun updateUser(user: UserUpdateDTO): UsersDTO
 }

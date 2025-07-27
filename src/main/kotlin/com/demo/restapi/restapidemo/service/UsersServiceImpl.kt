@@ -1,5 +1,6 @@
 package com.demo.restapi.restapidemo.service
 
+import com.demo.restapi.restapidemo.dto.UserUpdateDTO
 import com.demo.restapi.restapidemo.dto.UsersDTO
 import com.demo.restapi.restapidemo.repository.UsersRepository
 import com.demo.restapi.restapidemo.utils.mapper.UserMapper
@@ -80,27 +81,31 @@ class UsersServiceImpl (
         return userMapper.fromEntity(user)
     }
 
-//    override fun updateUser(user: UsersDTO): UsersDTO {
-//        if (user.id == null) {
-//            println("User ID cannot be null for update")
-//            throw IllegalArgumentException("User ID cannot be null for update")
-//        }
-//
-//        val existingUser = usersRepository.findById(user.id).orElseThrow {
-//            println("User with ID ${user.id} not found")
-//            EntityNotFoundException("User with ID ${user.id} not found")
-//        }
-//
-//        user.email?.takeIf { it.isNotBlank() }?.let {
-//            existingUser.email = it
-//        }
-//
-//        user.password?.takeIf { it.isNotBlank() }?.let {
-//            existingUser.password = it
-//        }
-//
-//        usersRepository.save(userMapper.toEntity(user))
-//
-//        return user
-//    }
+    override fun updateUser(user: UserUpdateDTO): UsersDTO {
+        val existingUser = usersRepository.findById(user.id).orElseThrow {
+            println("User with ID ${user.id} not found")
+            EntityNotFoundException("User with ID ${user.id} not found")
+        }
+
+        if (user.username != null && user.username != existingUser.username) {
+            println("Username cannot be changed")
+            throw IllegalArgumentException("Username cannot be changed")
+        }
+
+        user.email?.takeIf { it.isNotBlank() }?.let {
+            existingUser.email = it
+        }
+
+        user.password?.takeIf { it.isNotBlank() }?.let {
+            existingUser.password = it
+        }
+
+        user.info?.takeIf { it.isNotBlank() }?.let {
+            existingUser.info = it
+        }
+
+        val updatedUser = usersRepository.save(existingUser)
+
+        return userMapper.fromEntity(updatedUser)
+    }
 }

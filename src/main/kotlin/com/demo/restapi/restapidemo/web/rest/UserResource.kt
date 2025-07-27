@@ -1,5 +1,6 @@
 package com.demo.restapi.restapidemo.web.rest
 
+import com.demo.restapi.restapidemo.dto.UserUpdateDTO
 import com.demo.restapi.restapidemo.service.UsersService
 import com.demo.restapi.restapidemo.dto.UsersDTO
 import jakarta.persistence.EntityNotFoundException
@@ -49,6 +50,15 @@ class UserResource (
     fun getUserByEmail(@PathVariable email: String): ResponseEntity<UsersDTO> {
         return try {
             ResponseEntity.ok(usersService.getUserByEmail(email))
+        } catch (e: EntityNotFoundException) {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)
+        }
+    }
+
+    @PutMapping("/api/users/update")
+    fun updateUser(@RequestBody user: UserUpdateDTO): ResponseEntity<UsersDTO> {
+        return try {
+            ResponseEntity.ok(usersService.updateUser(user))
         } catch (e: EntityNotFoundException) {
             ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)
         }

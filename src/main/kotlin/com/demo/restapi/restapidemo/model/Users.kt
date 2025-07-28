@@ -12,7 +12,6 @@ import jakarta.persistence.Index
 import jakarta.persistence.Table
 
 
-
 @Entity
 @Table(
     name = "users",

@@ -34,6 +34,8 @@ class UsersServiceImpl (
             throw IllegalArgumentException("Email must contain '@'")
         }
 
+        // TODO("Implement email verification logic here")
+
         if (user.password.isBlank()) {
             println("Password cannot be blank")
             throw IllegalArgumentException("Password cannot be blank")
